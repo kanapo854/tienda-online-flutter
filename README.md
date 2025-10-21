@@ -16,20 +16,8 @@ Este proyecto implementa un **sistema empresarial offline-first** desarrollado e
 
 ### 🏢 **Estructura Organizacional**
 
-#### **1. Gestión de Empresas**
-```sql
-Companies (Empresas):
-- id: integer (PK)
-- name: string (Nombre de la empresa)
-- ruc: string (RUC/NIT único)
-- address: string (Dirección)
-- phone: string (Teléfono)
-- email: string (Email)
-- is_active: boolean
-- created_at, updated_at, needs_sync, last_sync_at
-```
 
-#### **2. Gestión de Tiendas**
+#### **1. Gestión de Tiendas**
 ```sql
 Stores (Tiendas):
 - id: integer (PK)
@@ -44,7 +32,7 @@ Stores (Tiendas):
 - created_at, updated_at, needs_sync, last_sync_at
 ```
 
-#### **3. Gestión de Almacenes**
+#### **2. Gestión de Almacenes**
 ```sql
 Warehouses (Almacenes):
 - id: integer (PK)
@@ -58,7 +46,7 @@ Warehouses (Almacenes):
 - created_at, updated_at, needs_sync, last_sync_at
 ```
 
-#### **4. Gestión de Empleados y Autenticación**
+#### **3. Gestión de Empleados y Autenticación**
 ```sql
 Employees (Empleados):
 - id: integer (PK)
@@ -79,15 +67,14 @@ Employees (Empleados):
 ```
 
 **Roles de Usuario:**
-- `admin`: Administrador general
-- `store_manager`: Encargado de tienda
-- `warehouse_manager`: Encargado de almacén
-- `cashier`: Cajero
-- `employee`: Empleado general
+- `admin_users`: Administrador usuarios
+- `admin_employees`: Administrador empleados
+- `admin_inventory`: Administrador de inventario
+- `customer`: Cliente
 
 ### 📦 **Gestión de Productos**
 
-#### **5. Categorías de Productos**
+#### **6. Categorías de Productos**
 ```sql
 ProductCategories (Categorías):
 - id: integer (PK)
@@ -111,7 +98,7 @@ ProductCategories (Categorías):
 - Herramientas
 - Adhesivos y pegamentos
 
-#### **6. Productos**
+#### **7. Productos**
 ```sql
 Products (Productos):
 - id: integer (PK)
@@ -134,7 +121,7 @@ Products (Productos):
 - created_at, updated_at, needs_sync, last_sync_at
 ```
 
-#### **7. Control de Stock por Almacén**
+#### **8. Control de Stock por Almacén**
 ```sql
 Stocks (Stock):
 - product_id: integer (PK, FK → Products)
@@ -145,9 +132,9 @@ Stocks (Stock):
 - updated_at, needs_sync, last_sync_at
 ```
 
-### 👥 **Gestión de Clientes y Proveedores**
+### 👥 **Gestión de Clientes **
 
-#### **8. Clientes**
+#### **9. Clientes**
 ```sql
 Customers (Clientes):
 - id: integer (PK)
@@ -165,21 +152,6 @@ Customers (Clientes):
 - created_at, updated_at, needs_sync, last_sync_at
 ```
 
-#### **9. Proveedores**
-```sql
-Suppliers (Proveedores):
-- id: integer (PK)
-- name: string (Nombre del proveedor)
-- ruc: string (RUC único)
-- contact_person: string (Persona de contacto)
-- email: string
-- phone: string
-- address: string
-- city: string
-- credit_days: real (Días de crédito)
-- is_active: boolean
-- created_at, updated_at, needs_sync, last_sync_at
-```
 
 ### 💰 **Sistema de Transacciones**
 
@@ -245,51 +217,6 @@ PurchaseItems (Items de Compra):
 - total_cost: real
 - notes: string
 - created_at, needs_sync
-```
-
-#### **12. Transferencias entre Almacenes**
-```sql
-Transfers (Transferencias):
-- id: integer (PK)
-- from_warehouse_id: integer (FK → Warehouses)
-- to_warehouse_id: integer (FK → Warehouses)
-- employee_id: integer (FK → Employees)
-- transfer_number: string (único)
-- transfer_date: datetime
-- transfer_status: string ('pending', 'in_transit', 'completed', 'cancelled')
-- reason: string
-- notes: string
-- created_at, updated_at, needs_sync, last_sync_at
-
-TransferItems (Items de Transferencia):
-- id: integer (PK)
-- transfer_id: integer (FK → Transfers)
-- product_id: integer (FK → Products)
-- quantity_sent: real
-- quantity_received: real
-- notes: string
-- created_at, needs_sync
-```
-
-### 📊 **Sistema de Auditoría y Control**
-
-#### **13. Movimientos de Inventario**
-```sql
-InventoryMovements (Movimientos):
-- id: integer (PK)
-- product_id: integer (FK → Products)
-- warehouse_id: integer (FK → Warehouses)
-- employee_id: integer (FK → Employees)
-- movement_type: string ('sale', 'purchase', 'transfer_out', 'transfer_in', 'adjustment', 'damage', 'return')
-- quantity: real (+ para entradas, - para salidas)
-- previous_stock: real
-- new_stock: real
-- reason: string
-- reference_type: string ('sale', 'purchase', 'transfer')
-- reference_id: integer
-- movement_date: datetime
-- notes: string
-- needs_sync, last_sync_at
 ```
 
 #### **14. Alertas de Stock**
@@ -376,26 +303,6 @@ SystemConfigs (Configuraciones):
 - Expiración de 8 horas
 - Validación offline completa
 
-## 🚀 **Funcionalidades Implementadas**
-
-### ✅ **Core del Sistema:**
-1. **Gestión Empresarial**: Empresas, tiendas, almacenes múltiples
-2. **Gestión de Personal**: Empleados con roles y permisos
-3. **Autenticación Robusta**: Online/offline con seguridad
-4. **Gestión de Productos**: Categorías específicas para construcción
-5. **Control de Stock**: Por almacén con alertas automáticas
-6. **Sistema de Ventas**: Completo con items y métodos de pago
-7. **Sistema de Compras**: Gestión de proveedores y recepciones
-8. **Transferencias**: Entre almacenes con seguimiento
-9. **Auditoría**: Movimientos de inventario con trazabilidad
-10. **Sincronización**: Automática y bidireccional
-
-### 📱 **Interfaces de Usuario:**
-- **Splash Screen**: Carga inicial con branding
-- **Login Screen**: Autenticación dual (online/offline)
-- **Dashboard**: Estadísticas en tiempo real
-- **Navegación**: BottomNavigationBar intuitiva
-
 ## 📋 **Configuración del Proyecto**
 
 ### **1. Configurar Supabase:**
@@ -420,57 +327,4 @@ flutter run
 -- Activar Row Level Security (RLS)
 -- Configurar políticas de acceso por empresa/tienda
 ```
-
-## 🎯 **Casos de Uso Empresariales**
-
-### **Escenario 1: Tienda con Múltiples Almacenes**
-- Almacén principal + almacén de tienda
-- Transferencias automáticas según stock mínimo
-- Control independiente por ubicación
-
-### **Escenario 2: Cadena de Tiendas**
-- Múltiples tiendas de una empresa
-- Sincronización centralizada
-- Reportes consolidados
-
-### **Escenario 3: Trabajo Offline**
-- Ventas sin conexión a internet
-- Sincronización automática al recuperar conexión
-- Continuidad operativa garantizada
-
-### **Escenario 4: Gestión de Empleados**
-- Roles específicos por tienda/almacén
-- Autenticación segura offline
-- Trazabilidad de operaciones por usuario
-
-## 🚀 **Próximas Funcionalidades**
-
-- [ ] **Reportes Avanzados**: Ventas, inventario, rentabilidad
-- [ ] **Dashboard Analytics**: Gráficos y métricas
-- [ ] **Gestión de Promociones**: Descuentos y ofertas
-- [ ] **Punto de Venta (POS)**: Interface de cajero
-- [ ] **Códigos de Barras**: Escáner integrado
-- [ ] **Fotos de Productos**: Gestión de imágenes
-- [ ] **Notificaciones Push**: Alertas en tiempo real
-- [ ] **Backup Automático**: Respaldo en la nube
-- [ ] **Multi-idioma**: Soporte internacional
-- [ ] **API REST**: Para integraciones externas
-
-## 📱 **Compatibilidad Multi-plataforma**
-
-- ✅ **Android**: Nativo con rendimiento óptimo
-- ✅ **iOS**: Nativo con rendimiento óptimo
-- ✅ **Windows Desktop**: Para oficinas
-- ✅ **macOS Desktop**: Para oficinas
-- ✅ **Linux Desktop**: Para servidores
-- ✅ **Web**: Acceso desde cualquier navegador
-
-## 🛡️ **Seguridad y Cumplimiento**
-
-- **Encriptación**: Datos sensibles encriptados
-- **Auditoría**: Registro completo de operaciones
-- **Roles y Permisos**: Control granular de acceso
-- **Backup**: Respaldo automático y manual
-- **GDPR Ready**: Cumplimiento de protección de datos
-
-Este sistema proporciona una **solución empresarial completa** para el sector de decoración y construcción, con capacidades offline robustas, sincronización automática y escalabilidad para múltiples tiendas y almacenes.
+Este sistema proporciona el flujo de un sistema para el sector de decoración y construcción, con capacidades offline robustas, sincronización automática y escalabilidad para múltiples tiendas y almacenes.
